@@ -114,12 +114,8 @@ namespace testDataGrid
         private void clientsDataGridView_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             ID = Convert.ToInt32(clientsDataGridView.Rows[e.RowIndex].Cells[0].Value.ToString());
+            clientsDataGridView.Rows[e.RowIndex].Selected = true;
             DisplaySingleRow(e.RowIndex);
-            //txt_FName.Text = clientsDataGridView.Rows[e.RowIndex].Cells[1].Value.ToString();
-            //txt_LName.Text = clientsDataGridView.Rows[e.RowIndex].Cells[2].Value.ToString();
-            //txt_Email.Text = clientsDataGridView.Rows[e.RowIndex].Cells[3].Value.ToString();
-            //txt_Height.Text = clientsDataGridView.Rows[e.RowIndex].Cells[4].Value.ToString();
-
         }
 
         private void ClearData()
@@ -133,13 +129,39 @@ namespace testDataGrid
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("Value changed to " + numericUpDown1.Value+"\nText is "+numericUpDown1.Text);
+            //MessageBox.Show("Value changed to " + numericUpDown1.Value+"\nText is "+numericUpDown1.Text);
+            DisplaySingleRow((int)numericUpDown1.Value-1);
+            clientsDataGridView.Rows[(int)numericUpDown1.Value - 1].Selected = true;
         }
 
         private void clientsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             ID = Convert.ToInt32(clientsDataGridView.Rows[e.RowIndex].Cells[0].Value.ToString());
             DisplaySingleRow(e.RowIndex);
+        }
+
+        private void clientsDataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) { 
+                for (int i = 0; i < clientsDataGridView.Rows[e.RowIndex].Cells.Count; i++)
+                {
+                    clientsDataGridView[i, e.RowIndex].Style.BackColor = Color.Yellow;
+                }
+                DisplaySingleRow(e.RowIndex);
+            }
+        }
+
+        private void clientsDataGridView_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                for (int i = 0; i < clientsDataGridView.Rows[e.RowIndex].Cells.Count; i++)
+                {
+                    clientsDataGridView[i, e.RowIndex].Style.BackColor = Color.Empty;
+                }
+                ClearData();
+            }
+
         }
     }
 }

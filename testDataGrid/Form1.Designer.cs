@@ -60,7 +60,8 @@
             this.clientsDataGridView.Size = new System.Drawing.Size(584, 250);
             this.clientsDataGridView.TabIndex = 0;
             this.clientsDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.clientsDataGridView_CellClick);
-            this.clientsDataGridView.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.clientsDataGridView_RowHeaderMouseClick);
+            this.clientsDataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.clientsDataGridView_CellMouseEnter);
+            this.clientsDataGridView.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.clientsDataGridView_CellMouseLeave);
             // 
             // panel1
             // 
