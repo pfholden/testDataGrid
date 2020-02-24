@@ -1,0 +1,23 @@
+{
+  "current_id": 7,
+  "clientList": [
+    {
+      "ID": 1,
+      "fname": "Jay",
+      "lname": "Smith",
+      "email": "jsmith@gmail.com"
+    },
+    {
+      "ID": 2,
+      "fname": "Gary",
+      "lname": "duncan",
+      "email": "garyd@gmail.com"
+    },
+    {
+      "ID": 3,
+      "fname": "June",
+      "lname": "Jones",
+      "email": "jonesj@gmail.com"
+    }
+  ]
+}
