@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace testDataGrid
 {
-    class Client
+    public class Client
     {
+        public static Random rnd;
         public int ID { get; set; }
         public string fname { get; set; }
         public string lname { get; set; }
@@ -27,7 +28,7 @@ namespace testDataGrid
 
         public Client()
         {
-            this.height = 72;
+            this.height = rnd.Next(42,84);
         }
     }
 }

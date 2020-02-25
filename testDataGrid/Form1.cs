@@ -14,11 +14,24 @@ namespace testDataGrid
     public partial class Form1 : System.Windows.Forms.Form
     {
         private BindingSource source = new BindingSource();
-        private ClientCollection clientCollection = ClientCollection.GetJSON();
+        private ClientCollection clientCollection;
         private int ID = 0;
 
+        Form2 f2;  
+
+        // Our delegate (which "points" at any method which takes an object and EventArgs)
+        // Look familiar? This is the signature of most control events on a form
+        public delegate void SendMessage(object obj, EventArgs e);
+
+        // Here is the event we trigger to send messages out to listeners
+        public event SendMessage OnSendMessage;
+        
+        
         public Form1()
         {
+            
+            clientCollection = ClientCollection.GetJSON();
+            f2 = new Form2(clientCollection.clientList.ElementAt(0));
             InitializeComponent();
             this.Load += new EventHandler(Form1_Load);
         }
@@ -26,6 +39,8 @@ namespace testDataGrid
         private void Form1_Load(System.Object sender, System.EventArgs e)
         {
             SetupDataGridView();
+            numericUpDown1.Maximum = clientCollection.clientList.Count;
+            
         }
 
        
@@ -114,7 +129,7 @@ namespace testDataGrid
         private void clientsDataGridView_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             ID = Convert.ToInt32(clientsDataGridView.Rows[e.RowIndex].Cells[0].Value.ToString());
-            clientsDataGridView.Rows[e.RowIndex].Selected = true;
+           // clientsDataGridView.Rows[e.RowIndex].Selected = true;
             DisplaySingleRow(e.RowIndex);
         }
 
@@ -142,7 +157,7 @@ namespace testDataGrid
 
         private void clientsDataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) { 
+            if (e.RowIndex >= 0 && clientsDataGridView.SelectedRows.Count == 0 ) { 
                 for (int i = 0; i < clientsDataGridView.Rows[e.RowIndex].Cells.Count; i++)
                 {
                     clientsDataGridView[i, e.RowIndex].Style.BackColor = Color.Yellow;
@@ -159,9 +174,49 @@ namespace testDataGrid
                 {
                     clientsDataGridView[i, e.RowIndex].Style.BackColor = Color.Empty;
                 }
-                ClearData();
+                if (clientsDataGridView.SelectedRows.Count == 0)
+                {
+                    ClearData();
+                }
             }
 
+        }
+
+        private void clientsDataGridView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Location.IsEmpty)
+            {
+                clientsDataGridView.Rows[this.clientsDataGridView.SelectedRows[0].Index].Selected = false;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //this.hide();
+            f2.NotButtonClicked += F2_NotButtonClicked;
+            OnSendMessage += f2.MessageReceived;
+            f2.Show();
+            //textBox1.Text = f2.rtnVal;
+            //f2.Close();
+        }
+
+        private void F2_NotButtonClicked(object sender, EventArgs e)
+        {
+            textBox1.Text = f2.rtnVal;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // When we click the message button, tell others to respond to our button being clicked
+            if (OnSendMessage != null)
+            {
+                OnSendMessage(this, e);
+            }
         }
     }
 }

@@ -12,6 +12,11 @@ namespace testDataGrid
         public int current_id { get; set; }
 
         public List<Client> clientList {get; set;} 
+        
+        public ClientCollection()
+        {
+            Client.rnd = new Random();
+        }
 
         static public ClientCollection GetJSON()
         {
